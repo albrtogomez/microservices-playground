@@ -1,30 +1,44 @@
 version: '3.4'
 
 services:
-  moviecatalog.database:
-    container_name: moviecatalog.database
+  moviecatalog-database:
+    container_name: moviecatalog-database
     restart: always
     ports:
       - "27017:27017"
     volumes:
       - moviecatalog-data:/data/db
 
-  moviecatalog.api:
-    container_name: moviecatalog.api
+  moviecatalog-api:
+    container_name: moviecatalog-api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "MovieCatalogDatabase__ConnectionString=mongodb://moviecatalog.database:27017"
+      - "MovieCatalogDatabase__ConnectionString=mongodb://moviecatalog-database:27017"
     depends_on:
-      - moviecatalog.database
+      - moviecatalog-database
     ports:
       - "7101:80"
 
-  shoppingcart.api:
-    container_name: shoppingcart.api
+  shoppingcart-api:
+    container_name: shoppingcart-api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "ShoppingCartCache__ConnectionString=shoppingcart.cache:6379"
+      - "ShoppingCartCache__ConnectionString=shoppingcart-cache:6379"
     depends_on:
-      - shoppingcart.cache
+      - shoppingcart-cache
     ports:
       - "7102:80"
+
+  blazor-webapp:
+    container_name: blazor-webapp
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - moviecatalog-api
+      - shoppingcart-cache
+    ports:
+      - "7100:80"
+
+volumes:
+  moviecatalog-data:
+    external: false

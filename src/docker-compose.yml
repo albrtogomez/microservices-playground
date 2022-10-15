@@ -1,23 +1,26 @@
 version: '3.4'
 
 services:
-  moviecatalog.database:
+  moviecatalog-database:
     image: mongo
 
-  shoppingcart.cache:
+  shoppingcart-cache:
     image: redis
 
-  moviecatalog.api:
+  moviecatalog-api:
     image: ${DOCKER_REGISTRY-}moviecatalogapi
     build:
       context: .
       dockerfile: Services/MovieCatalog.API/Dockerfile
 
-  shoppingcart.api:
+  shoppingcart-api:
     image: ${DOCKER_REGISTRY-}shoppingcartapi
     build:
       context: .
       dockerfile: Services/ShoppingCart.API/Dockerfile
 
-volumes:
-  moviecatalog-data: 
+  blazor-webapp:
+    image: ${DOCKER_REGISTRY-}blazorwebapp
+    build:
+      context: .
+      dockerfile: WebApps/BlazorWebApp/Dockerfile

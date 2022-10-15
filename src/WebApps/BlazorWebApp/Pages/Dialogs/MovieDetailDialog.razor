@@ -1,0 +1,33 @@
+﻿<MudCard Elevation="5">
+    <MudCardMedia Image="@movie.PosterUrl" Height="500" />
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h4">@movie.Title</MudText>
+            <MudText Typo="Typo.body2">@movie.Year</MudText>
+        </CardHeaderContent>
+        <CardHeaderActions>
+            <MudChip Text="grey" Variant="Variant.Text" Color="Color.Success" Class="mt-3">Only $@movie.Price</MudChip>
+        </CardHeaderActions>
+    </MudCardHeader>
+    <MudCardContent Style="margin-top: -10px">
+        <MudText Typo="Typo.body2" Inline="true">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </MudText>
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mb-2 ms-2" OnClick="Submit">Rent now</MudButton>
+        <MudButton Variant="Variant.Text" Color="Color.Default" Class="mb-2 ms-2" OnClick="Cancel">Back</MudButton>
+        <div style="width: 200px"></div>
+    </MudCardActions>
+</MudCard>
+
+@code {
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = null!;
+
+    [Parameter] 
+    public MovieDto movie { get; set; } = new MovieDto();
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    void Cancel() => MudDialog.Cancel();
+}

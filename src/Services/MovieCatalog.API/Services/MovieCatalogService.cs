@@ -24,7 +24,7 @@ public class MovieCatalogService
 	}
 
     public async Task<List<Movie>> GetAsync() =>
-        await _movieCollection.Find(_ => true).SortBy(m => m.Year).ToListAsync();
+        await _movieCollection.Find(_ => true).SortByDescending(m => m.Year).ToListAsync();
 
     public async Task<Movie?> GetAsync(string id) =>
         await _movieCollection.Find(x => x.Id == id).FirstOrDefaultAsync();

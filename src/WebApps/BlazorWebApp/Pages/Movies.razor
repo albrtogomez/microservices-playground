@@ -1,0 +1,83 @@
+﻿@page "/"
+@page "/movies"
+
+@inject IHttpClientFactory ClientFactory
+@inject IDialogService DialogService
+
+<PageTitle>Movie Catalog</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Movies</MudText>
+<MudText Class="mb-12">Catalog of movies available for rent. Click on any movie to put it in the shopping cart.</MudText>
+
+<MudGrid Spacing="5" Justify="Justify.Center">
+    @if (movies == null)
+    {
+        <MudItem>
+            @if (failedToFetchData)
+            {
+                <MudAlert Severity="Severity.Error">Unable to retrieve data from the Movie Cataloge API. Please try again later.</MudAlert>
+            }
+            else
+            {
+                <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+            }
+        </MudItem>
+    }
+    else
+    {
+        foreach (var movie in movies)
+        {
+            <MudItem>
+                <MudImage Src="@movie.PosterUrl" Alt="@movie.Title" Height="222" Width="150" Elevation="10" Class="rounded cursor-pointer" @onclick="() => OpenMovieDetailDialog(movie)" />
+            </MudItem>
+        }
+    }
+</MudGrid>
+
+@code {
+    private MovieDto[]? movies;
+    private bool failedToFetchData;
+
+    private string image = "https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get,
+            "http://host.docker.internal:7101/movies");
+
+        var client = ClientFactory.CreateClient();
+
+        try
+        {
+            var response = await client.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                using var responseStream = await response.Content.ReadAsStreamAsync();
+
+                movies = await JsonSerializer.DeserializeAsync
+                    <MovieDto[]>(responseStream, new JsonSerializerOptions{ PropertyNameCaseInsensitive = true });
+            }
+            else
+            {
+                failedToFetchData = true;
+            }
+        }
+        catch (HttpRequestException ex)
+        {
+            failedToFetchData = true;
+        }
+    }
+
+    private async Task OpenMovieDetailDialog(MovieDto movie)
+    {
+        var parameters = new DialogParameters { ["movie"] = movie };
+
+        var options = new DialogOptions { NoHeader = true, CloseOnEscapeKey = true, MaxWidth = MaxWidth.ExtraSmall };
+        var dialog = DialogService.Show<MovieDetailDialog>("", parameters, options);
+
+        var result = await dialog.Result;
+
+        // do something
+    }
+}

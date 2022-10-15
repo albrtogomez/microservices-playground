@@ -12,4 +12,8 @@ public class Movie
     public string Title { get; set; } = null!;
 
     public int Year { get; set; }
+
+    public string PosterUrl { get; set; } = null!;
+
+    public decimal Price { get; set; }
 }
