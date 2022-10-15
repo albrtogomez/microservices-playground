@@ -1,7 +1,21 @@
+using ShoppingCart.API.Data;
+using ShoppingCart.API.Model;
+using ShoppingCart.API.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.Configure<ShoppingCartCacheSettings>(
+    builder.Configuration.GetSection("ShoppingCartCache"));
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetSection("ShoppingCartCache").Get<ShoppingCartCacheSettings>().ConnectionString;
+});
+
+builder.Services.AddSingleton<ShoppingCartService>();
+
+// Configure Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -14,28 +28,25 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+// Minimal API endpoints
+app.MapGet("/shoppingcart/{userId}", async (string userId, ShoppingCartService shoppingCartService) =>
+    await shoppingCartService.GetAsync(userId)
+        is UserShoppingCart shoppingCart
+            ? Results.Ok(shoppingCart)
+            : Results.NotFound());
 
-app.MapGet("/weatherforecast", () =>
+app.MapPut("/shoppingcart", async (UserShoppingCart updatedShoppingCart, ShoppingCartService shoppingCartService) =>
 {
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateTime.Now.AddDays(index),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+    await shoppingCartService.UpdateAsync(updatedShoppingCart);
+
+    return Results.NoContent();
+});
+
+app.MapDelete("/shoppingcart/{userId}", async (string userId, ShoppingCartService shoppingCartService) =>
+{
+    await shoppingCartService.EmptyUserShoppingCart(userId);
+
+    return Results.Ok();
+});
 
 app.Run();
-
-internal record WeatherForecast(DateTime Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
