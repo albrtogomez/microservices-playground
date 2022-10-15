@@ -1,4 +1,4 @@
-﻿namespace MovieCatalog.API.Model;
+﻿namespace MovieCatalog.API.Data;
 
 public class MovieCatalogDatabaseSettings
 {

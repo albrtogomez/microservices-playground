@@ -1,7 +1,8 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using MovieCatalog.API.Model;
 
-namespace MovieCatalog.API.Model;
+namespace MovieCatalog.API.Data;
 
 public static class MovieCatalogSeed
 {

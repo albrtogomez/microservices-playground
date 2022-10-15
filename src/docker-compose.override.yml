@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  moviecatalog.database:
+    container_name: moviecatalog.database
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - moviecatalog-data:/data/db
+
+  moviecatalog.api:
+    container_name: moviecatalog.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "MovieCatalogDatabase__ConnectionString=mongodb://moviecatalog.database:27017"
+    depends_on:
+      - moviecatalog.database
+    ports:
+      - "7101:80"

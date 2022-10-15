@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using MovieCatalog.API.Data;
 using MovieCatalog.API.Model;
 
 namespace MovieCatalog.API.Services;
@@ -23,7 +24,7 @@ public class MovieCatalogService
 	}
 
     public async Task<List<Movie>> GetAsync() =>
-        await _movieCollection.Find(_ => true).ToListAsync();
+        await _movieCollection.Find(_ => true).SortBy(m => m.Year).ToListAsync();
 
     public async Task<Movie?> GetAsync(string id) =>
         await _movieCollection.Find(x => x.Id == id).FirstOrDefaultAsync();

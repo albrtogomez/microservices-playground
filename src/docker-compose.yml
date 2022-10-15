@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  moviecatalog.database:
+    image: mongo
+
+  moviecatalog.api:
+    image: ${DOCKER_REGISTRY-}moviecatalogapi
+    build:
+      context: .
+      dockerfile: Services/MovieCatalog.API/Dockerfile
+
+volumes:
+  moviecatalog-data: 

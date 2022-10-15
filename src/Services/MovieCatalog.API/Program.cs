@@ -1,3 +1,4 @@
+using MovieCatalog.API.Data;
 using MovieCatalog.API.Model;
 using MovieCatalog.API.Services;
 
@@ -22,6 +23,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Minimal API endpoints
 app.MapGet("/movies", async (MovieCatalogService movieCatalogService) =>
     await movieCatalogService.GetAsync());
 
