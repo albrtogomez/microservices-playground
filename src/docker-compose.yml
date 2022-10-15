@@ -4,11 +4,20 @@ services:
   moviecatalog.database:
     image: mongo
 
+  shoppingcart.cache:
+    image: redis
+
   moviecatalog.api:
     image: ${DOCKER_REGISTRY-}moviecatalogapi
     build:
       context: .
       dockerfile: Services/MovieCatalog.API/Dockerfile
+
+  shoppingcart.api:
+    image: ${DOCKER_REGISTRY-}shoppingcartapi
+    build:
+      context: .
+      dockerfile: Services/ShoppingCart.API/Dockerfile
 
 volumes:
   moviecatalog-data: 

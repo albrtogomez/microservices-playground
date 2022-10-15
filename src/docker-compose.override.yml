@@ -18,3 +18,13 @@ services:
       - moviecatalog.database
     ports:
       - "7101:80"
+
+  shoppingcart.api:
+    container_name: shoppingcart.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ShoppingCartCache__ConnectionString=shoppingcart.cache:6379"
+    depends_on:
+      - shoppingcart.cache
+    ports:
+      - "7102:80"
