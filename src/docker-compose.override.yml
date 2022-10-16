@@ -55,7 +55,7 @@ services:
     container_name: ordering-api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "OrderingDatabase__ConnectionString=Server=ordering-database;Port=5432;Database=OrderingDatabase;User Id=postgres;Password=example;"
+      - "OrderingDatabase__ConnectionString=Server=ordering-database;Port=5432;Database=OrderingDatabase;User Id=postgres;Password=test;"
     depends_on:
       - ordering-database
     ports:

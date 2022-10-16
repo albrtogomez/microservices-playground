@@ -1,4 +1,6 @@
-﻿namespace Ordering.Infrastructure.Persistence.Seeding
+﻿using Ordering.Domain.Entities;
+
+namespace Ordering.Infrastructure.Persistence.Seeding
 {
     public static class OrderingSeed
     {
@@ -6,7 +8,9 @@
         {
             if (!context.Orders.Any())
             {
-                // Create sample orders
+                context.Orders.Add(new Order() { OrderId = Guid.NewGuid() });
+
+                await context.SaveChangesAsync();
             }
         }
     }

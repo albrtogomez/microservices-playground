@@ -1,4 +1,3 @@
-using ShoppingCart.API.Data;
 using ShoppingCart.API.Model;
 using ShoppingCart.API.Services;
 using System.Text.Json;
@@ -6,13 +5,8 @@ using System.Text.Json;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.Configure<ShoppingCartCacheSettings>(
-    builder.Configuration.GetSection("ShoppingCartCache"));
-
 builder.Services.AddStackExchangeRedisCache(options =>
-{
-    options.Configuration = builder.Configuration.GetSection("ShoppingCartCache").Get<ShoppingCartCacheSettings>().ConnectionString;
-});
+    options.Configuration = builder.Configuration.GetSection("ShoppingCartCache").GetChildren().First().Value);
 
 builder.Services.AddSingleton<ShoppingCartService>();
 

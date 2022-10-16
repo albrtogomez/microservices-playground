@@ -12,7 +12,7 @@ namespace Ordering.Infrastructure.Persistence
 
         public DbSet<Order> Orders => Set<Order>();
 
-        public DataContext(IDomainEventService domainEventService)
+        public DataContext(DbContextOptions<DataContext> options, IDomainEventService domainEventService) : base(options)
         {
             _domainEventService = domainEventService;
         }
