@@ -9,6 +9,28 @@ services:
     volumes:
       - moviecatalog-data:/data/db
 
+  ordering-database:
+    container_name: ordering-database
+    environment:
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_DB=OrderingDatabase
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - ordering-data:/var/lib/postgressql/data/
+      
+  blazor-webapp:
+    container_name: blazor-webapp
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - moviecatalog-api
+      - shoppingcart-cache
+      - ordering-api
+    ports:
+      - "7100:80"
+
   moviecatalog-api:
     container_name: moviecatalog-api
     environment:
@@ -29,16 +51,31 @@ services:
     ports:
       - "7102:80"
 
-  blazor-webapp:
-    container_name: blazor-webapp
+  ordering-api:
+    container_name: ordering-api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - "OrderingDatabase__ConnectionString=Server=ordering-database;Port=5432;Database=OrderingDatabase;User Id=postgres;Password=example;"
     depends_on:
-      - moviecatalog-api
-      - shoppingcart-cache
+      - ordering-database
     ports:
-      - "7100:80"
+      - "7103:80"
+
+  ordering-database-pgadmin:
+    container_name: ordering-database-pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@test.com
+      - PGADMIN_DEFAULT_PASSWORD=test
+    restart: always
+    ports:
+        - "5050:80"
+    volumes:
+      - pgadmin-data:/root/.pgadmin
 
 volumes:
   moviecatalog-data:
+    external: false
+  ordering-data:
+    external: false
+  pgadmin-data:
     external: false

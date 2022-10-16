@@ -7,6 +7,15 @@ services:
   shoppingcart-cache:
     image: redis
 
+  ordering-database:
+    image: postgres
+    
+  blazor-webapp:
+    image: ${DOCKER_REGISTRY-}blazorwebapp
+    build:
+      context: .
+      dockerfile: WebApps/BlazorWebApp/Dockerfile
+
   moviecatalog-api:
     image: ${DOCKER_REGISTRY-}moviecatalogapi
     build:
@@ -19,8 +28,11 @@ services:
       context: .
       dockerfile: Services/ShoppingCart.API/Dockerfile
 
-  blazor-webapp:
-    image: ${DOCKER_REGISTRY-}blazorwebapp
+  ordering-api:
+    image: ${DOCKER_REGISTRY-}orderingapi
     build:
       context: .
-      dockerfile: WebApps/BlazorWebApp/Dockerfile
+      dockerfile: Services/Ordering.API/Dockerfile
+
+  ordering-database-pgadmin:
+    image: dpage/pgadmin4
