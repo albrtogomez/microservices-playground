@@ -1,6 +1,7 @@
 using ShoppingCart.API.Data;
 using ShoppingCart.API.Model;
 using ShoppingCart.API.Services;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,12 @@ app.MapGet("/shoppingcart/{userId}", async (string userId, ShoppingCartService s
             ? Results.Ok(shoppingCart)
             : Results.NotFound());
 
+app.MapGet("/shoppingcart/count/{userId}", async (string userId, ShoppingCartService shoppingCartService) =>
+    await shoppingCartService.GetAsync(userId)
+        is UserShoppingCart shoppingCart
+            ? Results.Ok(JsonSerializer.Serialize(shoppingCart.CartItems.Count))
+            : Results.NotFound());
+
 app.MapPut("/shoppingcart", async (UserShoppingCart updatedShoppingCart, ShoppingCartService shoppingCartService) =>
 {
     await shoppingCartService.UpdateAsync(updatedShoppingCart);
@@ -44,7 +51,7 @@ app.MapPut("/shoppingcart", async (UserShoppingCart updatedShoppingCart, Shoppin
 
 app.MapDelete("/shoppingcart/{userId}", async (string userId, ShoppingCartService shoppingCartService) =>
 {
-    await shoppingCartService.EmptyUserShoppingCart(userId);
+    await shoppingCartService.EmptyUserShoppingCartAsync(userId);
 
     return Results.Ok();
 });

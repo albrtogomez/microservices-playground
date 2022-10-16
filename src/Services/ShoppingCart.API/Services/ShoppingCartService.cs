@@ -28,6 +28,6 @@ public class ShoppingCartService
     public async Task UpdateAsync(UserShoppingCart shoppingCart) =>
 		await _cacheService.SetStringAsync(shoppingCart.UserId, JsonSerializer.Serialize(shoppingCart));
 
-	public async Task EmptyUserShoppingCart(string userId) =>
+	public async Task EmptyUserShoppingCartAsync(string userId) =>
 		await _cacheService.RemoveAsync(userId);
 }

@@ -1,9 +1,21 @@
-﻿<MudNavMenu>
+﻿@inject ShoppingCartService ShoppingCartService
+
+<MudNavMenu>
     @*<MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>*@
     <MudNavLink Href="movies" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Movie">Movies Catalog</MudNavLink>
     <MudNavLink Href="cart" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ShoppingCart">
         Shopping Cart
-        <MudChip Variant="Variant.Outlined" Color="Color.Success" Size="Size.Small" Style="height: 16px">2</MudChip>
+        <MudChip Variant="Variant.Outlined" Color="@(_shoppingCartItemCount > 0 ? Color.Success : Color.Default)" Size="Size.Small" Style="height: 16px">@_shoppingCartItemCount</MudChip>
     </MudNavLink>
     <MudNavLink Href="orders" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.ShoppingBag">Orders</MudNavLink>
 </MudNavMenu>
+
+@code {
+    private int _shoppingCartItemCount;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        _shoppingCartItemCount = await ShoppingCartService.GetCurrentUserShoppingCartItemCount() ?? 0;
+        StateHasChanged();
+    }
+}

@@ -24,7 +24,7 @@ public static class MovieCatalogSeed
                 Title = "Inception",
                 Year = 2010,
                 PosterUrl="https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
-                Price = 4.99m
+                Price = 3.99m
             },
             new Movie()
             {
@@ -40,7 +40,7 @@ public static class MovieCatalogSeed
                 Title = "The Prestige",
                 Year = 2006,
                 PosterUrl="https://m.media-amazon.com/images/M/MV5BMjA4NDI0MTIxNF5BMl5BanBnXkFtZTYwNTM0MzY2._V1_SX300.jpg",
-                Price = 4.99m
+                Price = 1.49m
             },
             new Movie()
             {
@@ -48,7 +48,7 @@ public static class MovieCatalogSeed
                 Title = "The Dark Night",
                 Year = 2008,
                 PosterUrl="https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SX300.jpg",
-                Price = 4.99m
+                Price = 2.49m
             },
             new Movie()
             {
@@ -56,7 +56,7 @@ public static class MovieCatalogSeed
                 Title = "Batman Begins",
                 Year = 2005,
                 PosterUrl="https://m.media-amazon.com/images/M/MV5BOTY4YjI2N2MtYmFlMC00ZjcyLTg3YjEtMDQyM2ZjYzQ5YWFkXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
-                Price = 4.99m
+                Price = 2.49m
             },
             new Movie()
             {
@@ -64,7 +64,7 @@ public static class MovieCatalogSeed
                 Title = "The Dark Knight Rises",
                 Year = 2012,
                 PosterUrl="https://m.media-amazon.com/images/M/MV5BMTk4ODQzNDY3Ml5BMl5BanBnXkFtZTcwODA0NTM4Nw@@._V1_SX300.jpg",
-                Price = 4.99m
+                Price = 2.49m
             },
             new Movie()
             {
@@ -80,7 +80,7 @@ public static class MovieCatalogSeed
                 Title = "Memento",
                 Year = 2000,
                 PosterUrl="https://m.media-amazon.com/images/M/MV5BZTcyNjk1MjgtOWI3Mi00YzQwLWI5MTktMzY4ZmI2NDAyNzYzXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg",
-                Price = 4.99m
+                Price = 1.99m
             },
             new Movie()
             {
@@ -88,7 +88,7 @@ public static class MovieCatalogSeed
                 Title = "Insomnio",
                 Year = 2002,
                 PosterUrl="https://m.media-amazon.com/images/M/MV5BYzlkZTEyYjUtMTY5NS00ZjU0LTk5OTYtM2M0ZDg1NmNjMzhkXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
-                Price = 4.99m
+                Price = 1.49m
             },
             new Movie()
             {
@@ -96,7 +96,7 @@ public static class MovieCatalogSeed
                 Title = "Following",
                 Year = 1998,
                 PosterUrl="https://m.media-amazon.com/images/M/MV5BNDVhYTAyMDgtM2NhNS00MmQ3LWE0ZDMtNWIxMjlhODFmOWUwXkEyXkFqcGdeQXVyMTA5NjIyODcx._V1_SX300.jpg",
-                Price = 4.99m
+                Price = 0.99m
             },
             new Movie()
             {
@@ -104,7 +104,7 @@ public static class MovieCatalogSeed
                 Title = "Oppenheimer",
                 Year = 2023,
                 PosterUrl="https://m.media-amazon.com/images/M/MV5BMDI5ZTVmMmMtZjg1Ny00NzNkLWFkMDctZDlmMzQ4MDcyODZlXkEyXkFqcGdeQXVyMzM1NDY1MDE@._V1_SX300.jpg",
-                Price = 4.99m
+                Price = 8.49m
             }
         });
     }

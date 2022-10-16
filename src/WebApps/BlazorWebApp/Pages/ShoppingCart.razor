@@ -1,0 +1,57 @@
+﻿@page "/cart"
+
+@inject ShoppingCartService ShoppingCartService
+
+<PageTitle>Shopping Cart</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Shopping Cart</MudText>
+<MudText Class="mb-12">This is your shopping basket. Click on 'Checkout' to confirm the order.</MudText>
+
+@if (!_shoppingCart.CartItems.Any())
+{
+    <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center" Style="width: 80%">
+        <MudAlert Severity="Severity.Normal" Style="width: 270px">Your shopping basket is empty.</MudAlert>
+    </MudStack>
+}
+else
+{
+    <MudStack Style="width: 80%">
+        <MudTable Items="@_shoppingCart.CartItems" Hover="true" Breakpoint="Breakpoint.Sm">
+            <HeaderContent>
+                <MudTh>Movie</MudTh>
+                <MudTh>Rental Days</MudTh>
+                <MudTh>Price</MudTh>
+                <MudTh></MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Title">@context.MovieTitle</MudTd>
+                <MudTd DataLabel="RentalDays">7</MudTd>
+                <MudTd DataLabel="Price">@context.Price</MudTd>
+                <MudTd>
+                    <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.FlexEnd">
+                        <MudButton Variant="Variant.Filled" Color="Color.Default" Size="Size.Small" OnClick="@(() => RemoveMovieFromCart(context.MovieId))">Remove</MudButton>
+                    </MudStack>
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+        <MudStack Row="true" Class="mt-4" AlignItems="AlignItems.Center" Justify="Justify.FlexEnd" Spacing="5">
+            <MudText Typo="Typo.body2">Total Price: $@_shoppingCart.TotalPrice</MudText>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary">Checkout</MudButton>
+        </MudStack>
+    </MudStack>
+}
+
+@code {
+    private UserShoppingCartDto _shoppingCart = new UserShoppingCartDto();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _shoppingCart = await ShoppingCartService.GetCurrentUserShoppingCart();
+    }
+
+    private async Task RemoveMovieFromCart(string movieId) 
+    {
+        await ShoppingCartService.RemoveMovieFromShoppingCart(movieId);
+        _shoppingCart = await ShoppingCartService.GetCurrentUserShoppingCart();       
+    }
+}

@@ -3,6 +3,9 @@
 
 @inject IHttpClientFactory ClientFactory
 @inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@inject MovieCatalogService MovieCatalogService
+@inject ShoppingCartService ShoppingCartService
 
 <PageTitle>Movie Catalog</PageTitle>
 
@@ -38,32 +41,13 @@
     private MovieDto[]? movies;
     private bool failedToFetchData;
 
-    private string image = "https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg";
-
     protected override async Task OnInitializedAsync()
-    {
-        var request = new HttpRequestMessage(HttpMethod.Get,
-            "http://host.docker.internal:7101/movies");
-
-        var client = ClientFactory.CreateClient();
-
+    {   
         try
         {
-            var response = await client.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
-            {
-                using var responseStream = await response.Content.ReadAsStreamAsync();
-
-                movies = await JsonSerializer.DeserializeAsync
-                    <MovieDto[]>(responseStream, new JsonSerializerOptions{ PropertyNameCaseInsensitive = true });
-            }
-            else
-            {
-                failedToFetchData = true;
-            }
+            movies = await MovieCatalogService.GetMoviesAsync();
         }
-        catch (HttpRequestException ex)
+        catch
         {
             failedToFetchData = true;
         }
@@ -71,13 +55,41 @@
 
     private async Task OpenMovieDetailDialog(MovieDto movie)
     {
+        Snackbar.Clear();
+
         var parameters = new DialogParameters { ["movie"] = movie };
 
         var options = new DialogOptions { NoHeader = true, CloseOnEscapeKey = true, MaxWidth = MaxWidth.ExtraSmall };
         var dialog = DialogService.Show<MovieDetailDialog>("", parameters, options);
 
-        var result = await dialog.Result;
+        DialogResult result = await dialog.Result;
 
-        // do something
+        if (!result.Cancelled)
+        {
+            await TryPutMovieInShoppingCart(movie);
+        }
+    }
+
+    private async Task TryPutMovieInShoppingCart(MovieDto movie)
+    {
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
+        Snackbar.Configuration.ClearAfterNavigation = true;
+
+        switch (await ShoppingCartService.PutMovieInShoppingCart(movie))
+        {
+            case PutMovieInShoppingCartResult.Ok:
+                Snackbar.Add($"{movie.Title} added to the shopping cart!", Severity.Success, config =>
+                {
+                    config.Icon = Icons.Material.Filled.ShoppingCartCheckout;
+                    config.IconColor = Color.Dark;
+                });
+                break;
+            case PutMovieInShoppingCartResult.AlreadyPresent:
+                Snackbar.Add($"{movie.Title} is already in the shopping cart!", Severity.Error);
+                break;
+            case PutMovieInShoppingCartResult.Failed:
+                Snackbar.Add($"Something went wrong. Try again later.", Severity.Error);
+                break;
+        }
     }
 }
