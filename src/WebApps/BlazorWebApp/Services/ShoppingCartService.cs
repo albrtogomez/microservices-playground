@@ -3,6 +3,7 @@ using System.Net.Http;
 using System;
 using System.Text;
 using System.Text.Json;
+using Microsoft.AspNetCore.Components;
 
 namespace BlazorWebApp.Services;
 
@@ -12,11 +13,14 @@ public class ShoppingCartService
     private readonly string _shoppingCartAPIBaseUrl;
     private readonly string _userId;
 
+    public event EventHandler? OnChange;
+
     public ShoppingCartService(IHttpClientFactory clientFactory)
     {
         _httpClientFactory = clientFactory;
         _shoppingCartAPIBaseUrl = "http://host.docker.internal:7102/shoppingcart/";
-        _userId = Guid.NewGuid().ToString();
+        //_userId = Guid.NewGuid().ToString();
+        _userId = "3852e76d-e4ad-439f-81ab-1d6a4e48a63b";
     }
 
     public async Task<UserShoppingCartDto> GetCurrentUserShoppingCart()
@@ -40,7 +44,7 @@ public class ShoppingCartService
                 return shoppingCart ?? new UserShoppingCartDto();
             }
         }
-        catch (HttpRequestException ex)
+        catch (HttpRequestException)
         {
         }
 
@@ -66,7 +70,7 @@ public class ShoppingCartService
                 }
             }
         }
-        catch (HttpRequestException ex)
+        catch (HttpRequestException)
         {
         }
 
@@ -99,9 +103,11 @@ public class ShoppingCartService
 
             response.EnsureSuccessStatusCode();
 
+            NotifyStateChanged();
+
             return PutMovieInShoppingCartResult.Ok;
         }
-        catch (HttpRequestException ex)
+        catch (HttpRequestException)
         {
         }
 
@@ -128,11 +134,15 @@ public class ShoppingCartService
             var response = await client.PutAsync(_shoppingCartAPIBaseUrl, requestContent);
 
             response.EnsureSuccessStatusCode();
+
+            NotifyStateChanged();
         }
-        catch (HttpRequestException ex)
+        catch (HttpRequestException)
         {
         }
     }
+
+    private void NotifyStateChanged() => OnChange?.Invoke(this, EventArgs.Empty);
 }
 
 public enum PutMovieInShoppingCartResult

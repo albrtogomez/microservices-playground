@@ -1,13 +1,11 @@
-﻿@page "/cart"
+﻿@page "/orders"
 
-@inject ShoppingCartService ShoppingCartService
-
-<PageTitle>Shopping Cart</PageTitle>
+<PageTitle>Orders</PageTitle>
 
 <MudText Typo="Typo.h3" GutterBottom="true">Shopping Cart</MudText>
-<MudText Class="mb-12">This is your shopping basket. Click on 'Checkout' to confirm the order.</MudText>
+<MudText Class="mb-12">Here you can find all the orders already made.</MudText>
 
-@if (!_shoppingCart.CartItems.Any())
+@*@if (!_shoppingCart.CartItems.Any())
 {
     <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center" Style="width: 80%">
         <MudAlert Severity="Severity.Normal" Style="width: 270px">Your shopping basket is empty.</MudAlert>
@@ -35,7 +33,7 @@ else
             </RowTemplate>
         </MudTable>
         <MudStack Row="true" Class="mt-4" AlignItems="AlignItems.Center" Justify="Justify.FlexEnd" Spacing="5">
-            <MudText Typo="Typo.body2">Total Price: $@_shoppingCart.TotalPrice</MudText>
+            <MudText Typo="Typo.body2">Total: $@_shoppingCart.TotalPrice</MudText>
             <MudButton Variant="Variant.Filled" Color="Color.Primary">Checkout</MudButton>
         </MudStack>
     </MudStack>
@@ -56,3 +54,4 @@ else
         _shoppingCart = await ShoppingCartService.GetCurrentUserShoppingCart();
     }
 }
+*@

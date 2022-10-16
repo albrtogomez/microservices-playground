@@ -1,4 +1,5 @@
 ﻿@inject ShoppingCartService ShoppingCartService
+@implements IDisposable
 
 <MudNavMenu>
     @*<MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>*@
@@ -13,9 +14,29 @@
 @code {
     private int _shoppingCartItemCount;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
+    {
+        await GetShoppingCartItemCount();
+    }
+
+    protected override void OnInitialized()
+    {
+        ShoppingCartService.OnChange += OnMyChangeHandler;
+    }
+
+    public void Dispose()
+    {
+        ShoppingCartService.OnChange -= OnMyChangeHandler;
+    }
+
+    private async void OnMyChangeHandler(object? sender, EventArgs e)
+    {
+        await InvokeAsync(GetShoppingCartItemCount);
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task GetShoppingCartItemCount()
     {
         _shoppingCartItemCount = await ShoppingCartService.GetCurrentUserShoppingCartItemCount() ?? 0;
-        StateHasChanged();
     }
 }

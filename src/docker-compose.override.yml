@@ -9,6 +9,12 @@ services:
     volumes:
       - moviecatalog-data:/data/db
 
+  shoppingcart-cache:
+    container_name: shoppingcart-cache
+    restart: always    
+    ports:
+        - "6379:6379"
+
   ordering-database:
     container_name: ordering-database
     environment:

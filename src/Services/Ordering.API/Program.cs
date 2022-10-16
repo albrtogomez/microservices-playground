@@ -1,26 +1,19 @@
-using FluentValidation;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Ordering.Application.Common.Behaviours;
+using Ordering.Application;
 using Ordering.Application.Common.Interfaces;
 using Ordering.Infrastructure.Persistence;
 using Ordering.Infrastructure.Persistence.Seeding;
 using Ordering.Infrastructure.Services;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-//builder.Services.AddApplication();
-//builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddControllers();
 
-// Application Layer Services
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
-builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+// Application layer services
+builder.Services.AddApplication();
 
-// Infrastructure Layer Services
+// Infrastructure layer services
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseNpgsql(builder.Configuration.GetSection("OrderingDatabase").GetChildren().First().Value));
 builder.Services.AddScoped<IDataContext>(provider => provider.GetRequiredService<DataContext>());
@@ -31,6 +24,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -63,5 +58,7 @@ using (var scope = app.Services.CreateScope())
         throw;
     }
 }
+
+app.MapControllers();
 
 app.Run();
