@@ -1,6 +1,6 @@
 <h1>Microservices Playground</h1>
   <p>
-    This solution is a playground for testing and exploring different concepts and approaches in microservice pattern. It is built using [.NET 6](https://docs.microsoft.com/es-es/dotnet/core/whats-new/dotnet-6) along with other technologies. The application consist of a simplified video rental store website.
+    This solution is a playground for testing and exploring different concepts and approaches in microservice pattern. It is built using .NET 6 along with other technologies. The application consist of a simplified video rental store website.
   <br />
   </p>
 </div>
