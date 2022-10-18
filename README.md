@@ -49,7 +49,7 @@ Shopping Cart REST API service using:
 - [Redis](https://redis.io/) for cache storage.
 
 ```
-http://localhost:7101/swagger/
+http://localhost:7102/swagger/
 ```
 
 ### Ordering
@@ -62,7 +62,7 @@ Ordering REST API service using:
 - [PostgreSQL](https://www.postgresql.org/) for local storage
 
 ```
-http://localhost:7101/swagger/
+http://localhost:7103/swagger/
 ```
 
 <!-- ROADMAP -->
