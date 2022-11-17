@@ -1,9 +1,6 @@
 ﻿using BlazorWebApp.Model;
-using System.Net.Http;
-using System;
 using System.Text;
 using System.Text.Json;
-using Microsoft.AspNetCore.Components;
 
 namespace BlazorWebApp.Services;
 
@@ -62,12 +59,10 @@ public class ShoppingCartService
         {
             var response = await client.SendAsync(request);
 
-            if (response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode &&
+                int.TryParse((await response.Content.ReadAsStringAsync()).Replace("\"", ""), out int itemCount))
             {
-                if (int.TryParse((await response.Content.ReadAsStringAsync()).Replace("\"", ""), out int itemCount))
-                {
-                    return itemCount;
-                }
+                return itemCount;
             }
         }
         catch (HttpRequestException)

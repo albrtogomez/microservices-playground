@@ -12,30 +12,27 @@ namespace Ordering.Infrastructure.Persistence.Seeding
                 {
                     new Order()
                     {
-                        OrderId = Guid.NewGuid(),
                         CustomerId = "3852e76d-e4ad-439f-81ab-1d6a4e48a63b",
-                        OrderDate = DateTime.Today,
+                        OrderDate = DateTime.Today.AddDays(-67),
                         TotalPrice = 14.98m
                     },
                     new Order()
                     {
-                        OrderId = Guid.NewGuid(),
                         CustomerId = "3852e76d-e4ad-439f-81ab-1d6a4e48a63b",
-                        OrderDate = DateTime.Today.AddDays(-10),
+                        OrderDate = DateTime.Today.AddDays(-32),
                         TotalPrice = 3.99m
                     },
                     new Order()
                     {
-                        OrderId = Guid.NewGuid(),
                         CustomerId = "3852e76d-e4ad-439f-81ab-1d6a4e48a63b",
-                        OrderDate = DateTime.Today.AddDays(-32),
+                        OrderDate = DateTime.Today.AddDays(-10),
                         TotalPrice = 1.49m
                     },
                     new Order()
                     {
-                        OrderId = Guid.NewGuid(),
                         CustomerId = "3852e76d-e4ad-439f-81ab-1d6a4e48a63b",
-                        OrderDate = DateTime.Today.AddDays(-67),
+                        
+                        OrderDate = DateTime.Today,
                         TotalPrice = 8.99m
                     },
                 });

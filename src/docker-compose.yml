@@ -9,6 +9,9 @@ services:
 
   ordering-database:
     image: postgres
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
     
   blazor-webapp:
     image: ${DOCKER_REGISTRY-}blazorwebapp

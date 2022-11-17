@@ -1,11 +1,10 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Ordering.Application.Features.Orders.Queries;
 
 namespace Ordering.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("orders")]
     [ApiController]
     public class OrdersController : ControllerBase
     {
@@ -16,7 +15,7 @@ namespace Ordering.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<OrderDto>> Get() => await _mediator.Send(new GetOrdersQuery());
+        [HttpGet("user/{userId}")]
+        public async Task<IEnumerable<OrderDto>> GetUserOrders(string userId) => await _mediator.Send(new GetUserOrdersQuery(userId));
     }
 }

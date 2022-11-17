@@ -34,7 +34,7 @@ http://localhost:7100/
 Movie Catalog REST API service using:
 - [ASP.NET Core Web API](https://learn.microsoft.com/es-es/aspnet/core/web-api/?view=aspnetcore-6.0)
 - [Minimal APIs](https://learn.microsoft.com/es-es/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-6.0)
-- [MongoDb](https://www.mongodb.com/) for local storage.
+- [MongoDb](https://www.mongodb.com/) for local storage
 
 ```
 http://localhost:7101/swagger/
@@ -42,11 +42,11 @@ http://localhost:7101/swagger/
 
 ### Shopping Cart
 
-Shopping Cart REST API service using: 
+Shopping Cart REST API service using:
 - [ASP.NET Core Web API](https://learn.microsoft.com/es-es/aspnet/core/web-api/?view=aspnetcore-6.0)
 - [Minimal APIs](https://learn.microsoft.com/es-es/aspnet/core/fundamentals/minimal-apis?view=aspnetcore-6.0)
-- [RabbitMQ](https://www.rabbitmq.com/) for inter-service communication (in progress) 
-- [Redis](https://redis.io/) for cache storage.
+- [RabbitMQ](https://www.rabbitmq.com/) for inter-service communication (in progress)
+- [Redis](https://redis.io/) for cache storage
 
 ```
 http://localhost:7102/swagger/
@@ -56,7 +56,7 @@ http://localhost:7102/swagger/
 
 Ordering REST API service using:
 - [ASP.NET Core Web API](https://learn.microsoft.com/es-es/aspnet/core/web-api/?view=aspnetcore-6.0)
-- Clean Architecure design using DDD principles.
+- Clean Architecure design using DDD principles
 - CQRS implementation using [MediatR](https://github.com/jbogard/MediatR), [FluentValidation](https://github.com/FluentValidation/FluentValidation) and [AutoMapper](https://github.com/AutoMapper/AutoMapper)
 - [RabbitMQ](https://www.rabbitmq.com/) for inter-service communication (in progress)
 - [PostgreSQL](https://www.postgresql.org/) for local storage

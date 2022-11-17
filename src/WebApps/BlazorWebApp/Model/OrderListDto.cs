@@ -1,10 +1,8 @@
-﻿namespace Ordering.Domain.Entities;
+﻿namespace BlazorWebApp.Model;
 
-public class Order
+public class OrderListDto
 {
     public int OrderId { get; set; }
-
-    public string CustomerId { get; set; } = null!;
 
     public decimal TotalPrice { get; set; }
 

@@ -1,3 +1,4 @@
+using MassTransit;
 using ShoppingCart.API.Model;
 using ShoppingCart.API.Services;
 using System.Text.Json;
@@ -7,6 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = builder.Configuration.GetSection("ShoppingCartCache").GetChildren().First().Value);
+
+builder.Services.AddMassTransit(config => {
+    config.UsingRabbitMq((_, config) => {
+        config.Host(builder.Configuration.GetSection("RabbitMQSettings").GetChildren().First().Value);
+    });
+});
 
 builder.Services.AddSingleton<ShoppingCartService>();
 

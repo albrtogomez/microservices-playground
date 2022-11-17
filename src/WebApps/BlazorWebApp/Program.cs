@@ -10,6 +10,7 @@ builder.Services.AddMudServices();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<MovieCatalogService>();
 builder.Services.AddSingleton<ShoppingCartService>();
+builder.Services.AddSingleton<OrderingService>();
 
 var app = builder.Build();
 

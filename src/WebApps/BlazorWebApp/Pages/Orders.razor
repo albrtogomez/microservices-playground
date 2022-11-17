@@ -1,57 +1,41 @@
 ﻿@page "/orders"
 
+@inject OrderingService OrderingService
+
 <PageTitle>Orders</PageTitle>
 
 <MudText Typo="Typo.h3" GutterBottom="true">Shopping Cart</MudText>
 <MudText Class="mb-12">Here you can find all the orders already made.</MudText>
 
-@*@if (!_shoppingCart.CartItems.Any())
+@if (!_orders.Any())
 {
     <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center" Style="width: 80%">
-        <MudAlert Severity="Severity.Normal" Style="width: 270px">Your shopping basket is empty.</MudAlert>
+        <MudAlert Severity="Severity.Normal" Style="width: 270px">You have not placed any order yet.</MudAlert>
     </MudStack>
 }
 else
 {
     <MudStack Style="width: 80%">
-        <MudTable Items="@_shoppingCart.CartItems" Hover="true" Breakpoint="Breakpoint.Sm">
+        <MudTable Items="@_orders" Hover="true" Breakpoint="Breakpoint.Sm">
             <HeaderContent>
-                <MudTh>Movie</MudTh>
-                <MudTh>Rental Days</MudTh>
+                <MudTh>Order Number</MudTh>
+                <MudTh>Order Date</MudTh>
                 <MudTh>Price</MudTh>
-                <MudTh></MudTh>
             </HeaderContent>
             <RowTemplate>
-                <MudTd DataLabel="Title">@context.MovieTitle</MudTd>
-                <MudTd DataLabel="RentalDays">7</MudTd>
-                <MudTd DataLabel="Price">@context.Price</MudTd>
-                <MudTd>
-                    <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.FlexEnd">
-                        <MudButton Variant="Variant.Filled" Color="Color.Default" Size="Size.Small" OnClick="@(() => RemoveMovieFromCart(context.MovieId))">Remove</MudButton>
-                    </MudStack>
-                </MudTd>
+                <MudTd DataLabel="Order Number">#@context.OrderId</MudTd>
+                <MudTd DataLabel="Order Date">@context.OrderDate</MudTd>
+                <MudTd DataLabel="Price">@context.TotalPrice</MudTd>
             </RowTemplate>
         </MudTable>
-        <MudStack Row="true" Class="mt-4" AlignItems="AlignItems.Center" Justify="Justify.FlexEnd" Spacing="5">
-            <MudText Typo="Typo.body2">Total: $@_shoppingCart.TotalPrice</MudText>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary">Checkout</MudButton>
-        </MudStack>
     </MudStack>
 }
 
 @code {
-    private UserShoppingCartDto _shoppingCart = new UserShoppingCartDto();
+    private List<OrderListDto> _orders = new List<OrderListDto>();
 
     protected override async Task OnInitializedAsync()
     {
-        _shoppingCart = await ShoppingCartService.GetCurrentUserShoppingCart();
-    }
-
-    private async Task RemoveMovieFromCart(string movieId) 
-    {
-        await ShoppingCartService.RemoveMovieFromShoppingCart(movieId);
-
-        _shoppingCart = await ShoppingCartService.GetCurrentUserShoppingCart();
+        _orders = await OrderingService.GetCurrentUserOrders();
     }
 }
-*@
